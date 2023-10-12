@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Resizer</title>
+  <style>
+        body {
+        font-family: Arial, sans-serif;
+        background: #f5f5f5; /* Light gray background with subtle gradient */
+        color: #333; /* Dark gray text color */
+        text-align: center;
+        margin: 0;
+        padding: 0;
+        }
+
+        h1 {
+        color: #fff; /* White header text color */
+        background: linear-gradient(135deg, #0079bf, #65a4ff); /* Blue gradient background */
+        padding: 20px;
+        margin: 0;
+        }
+
+        form {
+        margin: 20px;
+        padding: 20px;
+        background: #fff; /* White form background */
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Subtle box shadow */
+        }
+
+        input[type="file"] {
+        padding: 10px;
+        border: 2px solid #65a4ff; /* Light blue border for the file input */
+        border-radius: 5px;
+        width: 100%;
+        margin-bottom: 20px;
+        }
+
+        button {
+        background: #0079bf; /* Dark blue button background */
+        color: #fff; /* White button text color */
+        padding: 12px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease; /* Smooth background color transition */
+        }
+
+        button:hover {
+        background: #005ea2; /* Darker blue on hover */
+        }
+
+        #result {
+        margin: 20px;
+        padding: 20px;
+        background: #fff; /* White result container background */
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Subtle box shadow */
+        }
+
+
+  </style>
+</head>
+<body>
+  <h1>Image Resizer</h1>
+  <form id="form-submit" action="/upload" method="post" enctype="multipart/form-data" >
+    <input type="file" name="image" accept="image/*" >
+    <button type="submit">Upload and Resize</button>
+  </form>
+
+  <div id="result">
+  </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('form-submit');
+  const resultContainer = document.getElementById('result');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior.
+
+    const formData = new FormData(form);
+
+    // Send the form data to the server using Fetch API
+    fetch('/upload', {
+      method: 'POST',
+      body: formData,
+    })
+      .then((response) => response.text()) // Convert the response to text
+      .then((dataUrl) => {
+        // Create an image element and set its src attribute to the data URL
+        const imageElement = document.createElement('img');
+        imageElement.src = dataUrl;
+
+        // Clear the result container and append the image element
+        resultContainer.innerHTML = '';
+        resultContainer.appendChild(imageElement);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        // Handle any errors here, if necessary.
+      });
+  });
+});
+
+</script>
+</body>
+</html>
