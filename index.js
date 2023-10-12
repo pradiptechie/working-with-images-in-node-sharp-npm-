@@ -34,7 +34,7 @@ app.post('/upload', upload.single('image'), (req, res) => {
   // req.file contains the uploaded image as a buffer
   const imageBuffer = req.file.buffer;
   sharp(imageBuffer)
-  .resize(200, 200)
+  .resize(400, 600)
   .toBuffer()
   .then((processedImage) => {
     const imageBase64 = processedImage.toString('base64');
