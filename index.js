@@ -27,13 +27,6 @@ app.get("/img",(req,res)=>{
 })
 
 
-///uploading file from frontend
-// const upload = multer({dest: "uploads/" });
-// app.post("/upload", upload.single("image"), (req,res)=>{
-//     res.end("Success uploading");
-// });
-
-
 // Configure Multer to use memory storage
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -51,16 +44,6 @@ app.post('/upload', upload.single('image'), (req, res) => {
   .catch((err) => {
     res.status(500).send('Image processing error');
   });
-
-
-        // .toFile('out.jpg', (err,data)=>{
-        //     if(err){
-        //         console.log(err)
-        //     }else{
-        //         console.log("Resized succesfully");
-        //     }
-        // })
-
 
 });
 
