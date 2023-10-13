@@ -3,104 +3,136 @@
 <head>
   <title>Image Resizer</title>
   <style>
-        body {
-        font-family: Arial, sans-serif;
-        background: #f5f5f5; /* Light gray background with subtle gradient */
-        color: #333; /* Dark gray text color */
+    @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+
+    * {
+      font-family: "Ubuntu", sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    :root {
+    --blue: #2a2185;
+    --blue2: #4236ce;
+    --white: #fff;
+    --gray: #f4f4f4;
+    --gray2: #eeecec;
+    --black1: #222;
+    --black2: #999;
+    }
+  </style>
+<style>
+    body {
+        background: var(--gray);
+        color: var(--black1);
         text-align: center;
         margin: 0;
         padding: 0;
-        }
+    }
 
-        h1 {
-        color: #fff; /* White header text color */
-        background: linear-gradient(135deg, #0079bf, #65a4ff); /* Blue gradient background */
+    h1 {
+        color: var(--white);
+        background:var(--blue);
         padding: 20px;
         margin: 0;
-        }
+    }
 
-        form {
+    form {
         margin: 20px;
         padding: 20px;
-        background: #fff; /* White form background */
+        background: var(--white);
         border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Subtle box shadow */
-        }
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
 
-        input[type="file"] {
+
+    input[type="file"] {
         padding: 10px;
-        border: 2px solid #65a4ff; /* Light blue border for the file input */
+        border: 2px solid var(--blue);
         border-radius: 5px;
         width: 100%;
         margin-bottom: 20px;
-        }
+    }
 
-        button {
-        background: #0079bf; /* Dark blue button background */
-        color: #fff; /* White button text color */
+    input[type="number"]{
+      padding: 8px;
+      border: 2px solid var(--blue);
+      border-radius: 5px;
+      margin-bottom: 20px;
+
+
+    }
+
+    button {
+        background: var(--blue);
+        color: var(--white);
         padding: 12px 20px;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        transition: background-color 0.3s ease; /* Smooth background color transition */
-        }
+        transition: background-color 0.3s ease;
+    }
 
-        button:hover {
-        background: #005ea2; /* Darker blue on hover */
-        }
+    button:hover {
+        background: var(--blue2);
+    }
 
-        #result {
+    #result, #download {
         margin: 20px;
         padding: 20px;
-        background: #fff; /* White result container background */
+        background: var(--white);
         border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Subtle box shadow */
-        }
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+</style>
 
-
-  </style>
 </head>
 <body>
   <h1>Image Resizer</h1>
   <form id="form-submit" action="/upload" method="post" enctype="multipart/form-data" >
-    <input type="file" name="image" accept="image/*" >
+    <input type="file" name="image" accept="image/*" required>
+    <input type="number" name="hight" placeholder="Hight" required> X 
+    <input type="number" name="width" placeholder="Width" required>
     <button type="submit">Upload and Resize</button>
   </form>
 
   <div id="result">
   </div>
+  <div id="download">
+    <a href="#">Download</a>
+  </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('form-submit');
   const resultContainer = document.getElementById('result');
 
-  form.addEventListener('submit', (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior.
+    form.addEventListener('submit', (e) => {
+      e.preventDefault(); // Prevent the default form submission behavior.
 
-    const formData = new FormData(form);
+      const formData = new FormData(form);
 
-    // Send the form data to the server using Fetch API
-    fetch('/upload', {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.text()) // Convert the response to text
-      .then((dataUrl) => {
-        // Create an image element and set its src attribute to the data URL
-        const imageElement = document.createElement('img');
-        imageElement.src = dataUrl;
-
-        // Clear the result container and append the image element
-        resultContainer.innerHTML = '';
-        resultContainer.appendChild(imageElement);
+      // Send the form data to the server using Fetch API
+      fetch('/upload', {
+        method: 'POST',
+        body: formData,
       })
-      .catch((error) => {
-        console.error('Error:', error);
-        // Handle any errors here, if necessary.
-      });
+        .then((response) => response.text()) // Convert the response to text
+        .then((dataUrl) => {
+          // Create an image element and set its src attribute to the data URL
+          const imageElement = document.createElement('img');
+          imageElement.src = dataUrl;
+
+          // Clear the result container and append the image element
+          resultContainer.innerHTML = '';
+          resultContainer.appendChild(imageElement);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          // Handle any errors here, if necessary.
+        });
+    });
   });
-});
 
 </script>
 </body>

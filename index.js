@@ -1,5 +1,6 @@
 const sharp = require ('sharp');
 
+
 // sharp('1.jpg')
 // .resize( 200, 200)
 // .toFile('out.jpg', (err,data)=>{
@@ -14,6 +15,10 @@ const path = require('path');
 const multer = require('multer');
 const express =  require('express');
 const app = new express;
+
+const bodyParser = require ('body-parser');
+app.use(bodyParser.urlencoded({extended:true}));
+
 
 app.set("view engine", "hbs");
 
@@ -31,10 +36,16 @@ app.get("/img",(req,res)=>{
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 app.post('/upload', upload.single('image'), (req, res) => {
+  //body-parser le body tag vitra ko elements lai direct access garn milx, likr: req.body.element-Name
+  const hight = Number(req.body.hight);
+  const width = Number(req.body.width);
+  // console.log(hight);
+  // console.log(width);
+
   // req.file contains the uploaded image as a buffer
   const imageBuffer = req.file.buffer;
   sharp(imageBuffer)
-  .resize(400, 600)
+  .resize(width, hight)
   .toBuffer()
   .then((processedImage) => {
     const imageBase64 = processedImage.toString('base64');
