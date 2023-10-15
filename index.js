@@ -63,9 +63,9 @@ app.post('/imgresizer', upload.single('image'), (req, res) => {
 
 
 
-app.get("/watermark",(req,res)=>{
-  res.render("watermark");
-})
+// app.get("/watermark",(req,res)=>{
+//   res.render("watermark");
+// })
 // app.post('/watermark', upload.single('image'), (req,res)=>{
 //   const watertext = req.body.watertext;
 //   const fontsize = Number(req.body.fontsize);
@@ -97,35 +97,35 @@ app.get("/watermark",(req,res)=>{
 //         });
 // });
 
-app.post('/watermark', upload.single('image'), async (req, res) => {
-  try {
-      // Get user input from the form
-      const watermarkText = req.body.watermarkText;
-      const fontSize = parseInt(req.body.fontSize);
+// app.post('/watermark', upload.single('image'), async (req, res) => {
+//   try {
+//       // Get user input from the form
+//       const watermarkText = req.body.watermarkText;
+//       const fontSize = parseInt(req.body.fontSize);
 
-      // Process the uploaded image
-      const imageBuffer = req.file.buffer;
-      const watermarkedImageBuffer = await addWatermark(imageBuffer, watermarkText, fontSize);
+//       // Process the uploaded image
+//       const imageBuffer = req.file.buffer;
+//       const watermarkedImageBuffer = await addWatermark(imageBuffer, watermarkText, fontSize);
 
-      // Send the watermarked image as a data URL
-      const dataUrl = `data:image/jpeg;base64,${watermarkedImageBuffer.toString('base64')}`;
+//       // Send the watermarked image as a data URL
+//       const dataUrl = `data:image/jpeg;base64,${watermarkedImageBuffer.toString('base64')}`;
 
-      // Render the watermark tool page with the watermarked image
-      res.render('watermark', { watermarkedImage: dataUrl });
-  } catch (error) {
-      console.error(error);
-      res.status(500).send('Error processing image.');
-  }
-});
+//       // Render the watermark tool page with the watermarked image
+//       res.render('watermark', { watermarkedImage: dataUrl });
+//   } catch (error) {
+//       console.error(error);
+//       res.status(500).send('Error processing image.');
+//   }
+// });
 
-// Function to add a watermark to an image
-async function addWatermark(imageBuffer, text, fontSize) {
-  const image = sharp(imageBuffer);
-  return await image
-      .composite([{ input: Buffer.from(text), top: 10, left: 10 }])
-      .jpeg()
-      .toBuffer();
-}
+// // Function to add a watermark to an image
+// async function addWatermark(imageBuffer, text, fontSize) {
+//   const image = sharp(imageBuffer);
+//   return await image
+//       .composite([{ input: Buffer.from(text), top: 10, left: 10 }])
+//       .jpeg()
+//       .toBuffer();
+// }
 
 app.listen((4500),()=>{
     console.log("server running on port 4500");
