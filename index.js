@@ -1,16 +1,15 @@
-const sharp = require ('sharp');
-
 
 // sharp('1.jpg')
 // .resize( 200, 200)
 // .toFile('out.jpg', (err,data)=>{
-//     if(err){
-//         console.log(err)
-//     }else{
-//         console.log("Resized succesfully");
-//     }
-// })
-
+  //     if(err){
+    //         console.log(err)
+    //     }else{
+      //         console.log("Resized succesfully");
+      //     }
+      // })
+      
+const sharp = require ('sharp');
 const path = require('path');
 const multer = require('multer');
 const express =  require('express');
@@ -40,7 +39,7 @@ const upload = multer({ storage: storage });
 
 app.post('/imgresizer', upload.single('image'), (req, res) => {
   //body-parser le body tag vitra ko elements lai direct access garn milx, likr: req.body.element-Name
-  const hight = Number(req.body.hight);
+  const height = Number(req.body.height);
   const width = Number(req.body.width);
   // console.log(hight);
   // console.log(width);
@@ -48,13 +47,14 @@ app.post('/imgresizer', upload.single('image'), (req, res) => {
   // req.file contains the uploaded image as a buffer
   const imageBuffer = req.file.buffer;
   sharp(imageBuffer)
-  .resize(width, hight)
-  .toBuffer()
-  .then((processedImage) => {
-    const imageBase64 = processedImage.toString('base64');
-    const dataUrl = `data:image/jpeg;base64,${imageBase64}`;
-    res.send(dataUrl);
-  })
+    .resize(width, height)
+    .png()
+    .toBuffer()
+    .then((processedImage) => {
+      const imageBase64 = processedImage.toString('base64');
+      const dataUrl = `data:image/png;base64,${imageBase64}`;
+      res.send(dataUrl);
+    })
   .catch((err) => {
     res.status(500).send('Image processing error');
   });
